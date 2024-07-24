@@ -8,6 +8,6 @@
 session 값 확인: <p th:text="${session.loginEmail}"></p>
 <a href="/member/update">내 정보 수정하기</a>
 <a href="/member/logout">로그아웃</a>
+<a href="/admin/member-list" th:if="${session.admin != null}">회원 목록</a> <!-- 관리자일 경우 회원 목록 링크 표시 -->
 </body>
 </html>
-

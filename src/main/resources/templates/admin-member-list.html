@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Member List</title>
+</head>
+<body>
+<h2>회원 목록 (관리자 모드)</h2>
+<table>
+    <tr>
+        <th>id</th>
+        <th>email</th>
+        <th>password</th>
+        <th>name</th>
+    </tr>
+    <tr th:each="member: ${memberList}">
+        <td th:text="${member.id}"></td>
+        <td th:text="${member.memberEmail}"></td>
+        <td th:text="${member.memberPassword}"></td>
+        <td th:text="${member.memberName}"></td>
+    </tr>
+</table>
+<a href="/admin/logout">로그아웃</a>
+</body>
+</html>
