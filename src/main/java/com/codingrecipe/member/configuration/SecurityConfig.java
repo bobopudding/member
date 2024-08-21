@@ -4,8 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -18,20 +21,35 @@ public class SecurityConfig {
     }
 
     @Bean
+    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+        UserDetails admin = org.springframework.security.core.userdetails.User.withUsername("zerotrust")
+                .password(passwordEncoder.encode("zerotrust"))
+                .roles("ADMIN")
+                .build();
+
+        return new InMemoryUserDetailsManager(admin);
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests(authorize -> authorize
-                        .requestMatchers("/admin/**").authenticated() // 특정 URL 패턴에 대해 인증 요구
-                        .anyRequest().permitAll() // 그 외의 요청에 대해서는 인증 불필요
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/admin/**").authenticated() // 인증이 필요한 요청
+                        .anyRequest().permitAll() // 그 외 요청은 허용
                 )
                 .formLogin(form -> form
-                        .loginPage("/admin/login")
-                        .permitAll()
+                        .loginPage("/admin/login") // 사용자 정의 로그인 페이지
+                        .loginProcessingUrl("/admin/login") // 로그인 처리 URL
+                        .defaultSuccessUrl("/admin/member-list", true) // 로그인 성공 시 이동할 URL
+                        .permitAll() // 로그인 페이지는 인증 없이 접근 허용
                 )
                 .logout(logout -> logout
-                        .permitAll()
-                );
+                        .logoutUrl("/admin/logout") // 로그아웃 URL
+                        .logoutSuccessUrl("/") // 로그아웃 성공 시 이동할 URL
+                        .permitAll() // 로그아웃 페이지는 인증 없이 접근 허용
+                )
+                .csrf(csrf -> csrf.disable()); // CSRF 보호 비활성화
 
-        return http.build();
+        return http.build(); // SecurityFilterChain 객체 생성
     }
 }

@@ -4,7 +4,6 @@ import com.codingrecipe.member.dto.MemberDTO;
 import com.codingrecipe.member.entity.MemberEntity;
 import com.codingrecipe.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
 
     public void save(MemberDTO memberDTO) {
         memberDTO.setMemberPassword(passwordEncoder.encode(memberDTO.getMemberPassword()));
@@ -65,11 +64,4 @@ public class MemberService {
         return exists ? "exist" : "ok";
     }
 }
-
-
-
-
-
-
-
 

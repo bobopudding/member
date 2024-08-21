@@ -1,6 +1,5 @@
 package com.codingrecipe.member.controller;
 
-
 import com.codingrecipe.member.dto.MemberDTO;
 import com.codingrecipe.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +22,6 @@ public class MemberController {
 
     @PostMapping("/member/save")
     public String save(@ModelAttribute MemberDTO memberDTO) {
-        System.out.println("MemberController.save");
-        System.out.println("memberDTO = " + memberDTO);
         memberService.save(memberDTO);
         return "login";
     }
@@ -50,8 +47,6 @@ public class MemberController {
             return "login";
         }
     }
-
-
 
     @GetMapping("/member/")
     public String findAll(Model model) {
@@ -95,7 +90,6 @@ public class MemberController {
 
     @PostMapping("/member/email-check")
     public @ResponseBody String emailCheck(@RequestParam("memberEmail") String memberEmail) {
-        System.out.println("memberEmail = " + memberEmail);
         String checkResult = memberService.emailCheck(memberEmail);
         return checkResult;
     }

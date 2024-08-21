@@ -1,8 +1,7 @@
 package com.codingrecipe.member.entity;
 
-
 import com.codingrecipe.member.dto.MemberDTO;
-import jakarta.persistence.*; // javax 대신 jakarta 사용
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,11 +10,11 @@ import lombok.Setter;
 @Getter
 @Table(name = "member_table")
 public class MemberEntity {
-    @Id // pk 지정
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true) // unique 제약조건 추가
+    @Column(unique = true)
     private String memberEmail;
 
     @Column
@@ -41,7 +40,6 @@ public class MemberEntity {
         return memberEntity;
     }
 }
-
 
 
 
